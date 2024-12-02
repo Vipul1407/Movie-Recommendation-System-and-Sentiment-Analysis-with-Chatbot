@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Details about the movie {{ movie.title }} including its trailer, reviews, and sentiment analysis.">
+    <title>{{ movie.title }} - Movie Details</title>
+    <style>
+        /* Dark Theme Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark background */
+            color: #e0e0e0; /* Light text color */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        header {
+            background-color: #1f1f1f; /* Dark header */
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 80px; /* Add space at the bottom for footer */
+        }
+
+        .movie-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .movie-poster {
+            flex: 1 1 300px;
+            max-width: 300px;
+            margin-right: 20px;
+        }
+
+        .movie-poster img {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .movie-info {
+            flex: 2;
+            max-width: 700px;
+        }
+
+        .movie-info h2 {
+            font-size: 36px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .movie-info p {
+            font-size: 18px;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .movie-info .genres, .movie-info .cast {
+            font-weight: bold;
+            color: #2d87f0;
+        }
+
+        .movie-trailer {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        /* Updated styles for smaller trailer */
+        .movie-trailer iframe {
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 60%; /* Smaller width */
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            position: relative;
+            margin: 0 auto; /* Centering the video */
+        }
+
+        .movie-trailer iframe[src] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #2d87f0;  /* Brighter blue background */
+            color: #ffffff;  /* White text */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s; /* Add transform for hover effect */
+        }
+
+        .back-link:hover {
+            background-color: #1d6ac7;  /* Darker blue for hover */
+            transform: scale(1.05);  /* Slight zoom effect */
+        }
+
+        footer {
+            background-color: #1f1f1f; /* Dark footer */
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .sentiment-analysis {
+            margin-top: 30px;
+            background-color: #2d87f0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .sentiment-analysis h3 {
+            font-size: 24px;
+            color: #ffffff;
+        }
+
+        .sentiment-analysis p {
+            font-size: 18px;
+            color: #ffffff;
+            margin: 5px 0;
+        }
+
+        .reviews-section {
+            margin-top: 30px;
+        }
+
+        .reviews-section h3 {
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .reviews-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .reviews-section li {
+            background-color: #333;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .review-item {
+            margin-bottom: 15px;
+        }
+
+        .review-sentiment {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .positive {
+            color: #4caf50;
+        }
+
+        .negative {
+            color: #f44336;
+        }
+
+        .neutral {
+            color: #ff9800;
+        }
+
+        /* Styling for the generated summary */
+        .generated-summary {
+            background-color: #333;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 8px;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Movie Details</h1>
+</header>
+
+<div class="container">
+    <div class="movie-details">
+        <div class="movie-poster">
+            {% if movie.poster_url %}
+                <img src="{{ movie.poster_url }}" alt="Poster for {{ movie.title }}">
+            {% else %}
+                <p>No poster available</p>
+            {% endif %}
+        </div>
+
+        <div class="movie-info">
+            <h2>{{ movie.title }}</h2>
+            <p><strong>Summary:</strong> {{ movie.summary }}</p>
+            <p><strong>Rating:</strong> {{ movie.rating }}</p>
+            <p><strong>Genres:</strong> {{ movie.genres | join(', ') }}</p>
+            <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+            <p><strong>Cast:</strong> {{ movie.cast | join(', ') }}</p>
+        </div>
+    </div>
+
+    <!-- Display the generated plot summary -->
+    {% if generated_summary %}
+    <div class="generated-summary">
+        <h3>Generated Plot Summary:</h3>
+        <p>{{ generated_summary }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Movie Trailer Section -->
+    {% if movie.trailer_url %}
+    <div class="movie-trailer">
+        <h3>Watch the Trailer</h3>
+        <!-- Embed the trailer video with smaller responsive iframe -->
+        <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+            <iframe src="{{ movie.trailer_url }}?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+    {% else %}
+    <p>No trailer available.</p>
+    {% endif %}
+
+    <!-- Sentiment Analysis Section -->
+    {% if sentiment.positive_percent or sentiment.negative_percent or sentiment.neutral_percent %}
+    <div class="sentiment-analysis">
+        <h3>Sentiment Analysis of Reviews</h3>
+        <p><strong>Positive Reviews:</strong> {{ sentiment.positive_percent }}%</p>
+        <p><strong>Negative Reviews:</strong> {{ sentiment.negative_percent }}%</p>
+        <p><strong>Neutral Reviews:</strong> {{ sentiment.neutral_percent }}%</p>
+    </div>
+    {% endif %}
+
+    <!-- Movie Reviews Section -->
+    {% if review_sentiments %}
+    <div class="reviews-section">
+        <h3>Reviews</h3>
+        <ul>
+            {% for review in review_sentiments %}
+            <li class="review-item">
+                <p><strong>Review:</strong> {{ review.review }}</p>
+                <p class="review-sentiment {% if review.sentiment == 'Positive' %}positive{% elif review.sentiment == 'Negative' %}negative{% else %}neutral{% endif %}">
+                    <strong>Sentiment:</strong> {{ review.sentiment }} (Confidence: {{ '%.2f'|format(review.score) }})
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <p>No reviews available.</p>
+    {% endif %}
+
+    <a href="/" class="back-link">Back to Home</a>
+</div>
+
+<footer>
+    <p>&copy; 2024 Movie Recommendation System</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+  /* Body Styling */
+  body {
+    background-image: url("{{ url_for('static', filename='image.jpg') }}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #181818;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Header Styling */
+  header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    text-shadow: #000000 0px 0px 13px;
+  }
+
+  header h1 {
+    font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #e50914;
+    font-weight: bold;
+    margin-top: 30px;
+    text-shadow: #000000 0px 0px 13px;
+	text-align: center;
+	margin-right: 590px;
+  }
+
+  /* Main Container */
+  .container {
+    padding-top: 120px;
+    text-align: center;
+    color: white;
+  }
+
+  /* Button Styling */
+  button {
+    background-color: #e50914;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 15px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0px 1px 15px 4px rgba(229, 9, 20, 0.6);
+  }
+
+  button:hover {
+    background-color: #c40813;
+  }
+
+  /* Form Styling */
+  .info-form input {
+    width: 60%;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #ffffff;
+    color: #181818;
+    text-align: center;
+  }
+
+  .info-form input::placeholder {
+    color: #bbb;
+  }
+
+  /* Instructions Box */
+  #myDIV {
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    color: white;
+    margin: 20px auto;
+    border-radius: 5px;
+    width: 60%;
+    box-shadow: 0px 1px 15px 4px rgba(250, 250, 250, 0.6);
+  }
+
+  /* Table Styling */
+  .styled-table {
+    width: 60%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    color: white;
+    background-color: rgba(34, 34, 34, 0.9);
+    text-shadow: none;
+    box-shadow: 0px 1px 15px 4px rgba(255, 255, 255, 0.2);
+  }
+
+  .styled-table th, .styled-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid white;
+  }
+
+  .styled-table thead {
+    background-color: rgba(51, 51, 51, 0.9);
+  }
+
+  .styled-table tbody tr:nth-child(odd) {
+    background-color: rgba(51, 51, 51, 0.8);
+  }
+
+  .styled-table tbody tr:nth-child(even) {
+    background-color: rgba(34, 34, 34, 0.8);
+  }
+   #submit_button{
+	 
+	display: block;
+	margin: auto;
+  }
+
+  /* Chatbot Styling */
+  #chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+	color: black;
+  }
+
+  .chat-box {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .chat-input-container {
+    display: flex;
+    padding: 10px;
+  }
+
+  #chat-input {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+  }
+
+  #chat-send-button {
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #chat-send-button:hover {
+    background-color: #c40813;
+  }
+</style>
+
+<header>
+  <h1>Movie Recommendation System</h1>
+</header>
+
+<div class="container">
+  <div>
+    <button onclick="myFunction()">Click for Instructions</button>
+    <div id="myDIV">
+      <h4>Instructions</h4>
+      <ul style="text-align: left;">
+        <li>Please rate at least 20 movies between 0-5.</li>
+        <li>After rating, click "Predict" for recommendations.</li>
+        <li>Use "Reset" to restart the process.</li>
+      </ul>
+    </div>
+  </div>
+
+  <form action="/addMovie/" method="post" class="info-form">
+    <input type="text" id="movie_name" name="movie_name" placeholder="Enter Movie Name" required>
+    <input type="text" id="rating" name="rating" placeholder="Enter Rating (0-5)" required>
+    <button type="submit" id="submit_button">Add Movie</button>
+  </form>
+
+  <form action="/predict/" method="post">
+    <button>Predict</button>
+  </form>
+
+  <form action="/reset/" method="post">
+    <button>Reset</button>
+  </form>
+
+  {% if processed_text %}
+  <div>
+    <p>{{ processed_text }}</p>
+  </div>
+  {% endif %}
+
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Movies You've Rated</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for movie in my_added_movies %}
+      <tr>
+        <td>{{ movie }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div id="chatbot-container">
+  <div class="chat-box" id="chat-box"></div>
+  <div class="chat-input-container">
+    <input type="text" id="chat-input" placeholder="Type your message...">
+    <button id="chat-send-button">Send</button>
+  </div>
+</div>
+
+<div class="footer"></div>
+
+<script>
+  function myFunction() {
+    var x = document.getElementById("myDIV");
+    x.style.display = x.style.display === "none" ? "block" : "none";
+  }
+
+  document.getElementById('chat-send-button').addEventListener('click', function() {
+    const userMessage = document.getElementById('chat-input').value;
+    const chatBox = document.getElementById('chat-box');
+    const session = chatBox.dataset.session || 'start';
+    const genre = chatBox.dataset.genre || '';
+    const actor = chatBox.dataset.actor || '';
+    const director = chatBox.dataset.director || '';
+
+    // Display user message
+    chatBox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+    document.getElementById('chat-input').value = '';
+
+    // Send user message to the backend
+    fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        message: userMessage,
+        session: session,
+        genre: genre,
+        actor: actor,
+        director: director
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Display bot response
+      chatBox.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
+      chatBox.dataset.session = data.next_session;
+      chatBox.dataset.genre = data.genre;
+      chatBox.dataset.actor = data.actor;
+      chatBox.dataset.director = data.director;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    })
+    .catch(error => console.error('Error:', error));
+  });
+</script>
+{% endblock %}
