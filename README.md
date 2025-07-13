@@ -1,8 +1,8 @@
-<img src="Images/Screenshot 2025-07-13 114807.png" alt="Home Page">
+<img src="[Images/Screenshot 2025-07-13 114807.png](https://github.com/Vipul1407/Movie-Recommendation-System-and-Sentiment-Analysis-with-Chatbot/blob/main/Screenshot%202025-07-13%20114807.png)" alt="Home Page">
 
-<img src="Images/Screenshot 2025-07-13 114850.png" alt="Results View">
+<img src="[Images/Screenshot 2025-07-13 114850.png](https://github.com/Vipul1407/Movie-Recommendation-System-and-Sentiment-Analysis-with-Chatbot/blob/main/Screenshot%202025-07-13%20114850.png)" alt="Results View">
 
-<img src="Images/Screenshot 2025-07-13 115024.png" alt="Movie Detail">
+<img src="[Images/Screenshot 2025-07-13 115024.png](https://github.com/Vipul1407/Movie-Recommendation-System-and-Sentiment-Analysis-with-Chatbot/blob/main/Screenshot%202025-07-13%20115024.png)" alt="Movie Detail">
 
 
 
