@@ -1,0 +1,1 @@
+open server folder then at address bar write cmd , terminal will be opened write python app.py in that it will give a browser number paste that in your browser to run..
