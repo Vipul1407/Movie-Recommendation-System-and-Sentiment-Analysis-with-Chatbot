@@ -1,6 +1,9 @@
-![Home Page](<Images/Screenshot 2025-07-13 114807.png>)
-![Results View](<Images/Screenshot 2025-07-13 114850.png>)
-![Movie Detail](<Images/Screenshot 2025-07-13 115024.png>)
+<img src="Images/Screenshot 2025-07-13 114807.png" alt="Home Page">
+
+<img src="Images/Screenshot 2025-07-13 114850.png" alt="Results View">
+
+<img src="Images/Screenshot 2025-07-13 115024.png" alt="Movie Detail">
+
 
 
 ## Prerequisites
