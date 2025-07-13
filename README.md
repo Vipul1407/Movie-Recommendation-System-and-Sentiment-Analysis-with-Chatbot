@@ -1,6 +1,6 @@
-![Home Page – Screenshot 2025-07-13 11:48:07](Images/Screenshot 2025-07-13 114807.png)
-![Results View – Screenshot 2025-07-13 11:48:50](Images/Screenshot 2025-07-13 114850.png)
-![Movie Detail – Screenshot 2025-07-13 11:50:24](Images/Screenshot 2025-07-13 115024.png)
+![Home Page](<Images/Screenshot 2025-07-13 114807.png>)
+![Results View](<Images/Screenshot 2025-07-13 114850.png>)
+![Movie Detail](<Images/Screenshot 2025-07-13 115024.png>)
 
 
 ## Prerequisites
